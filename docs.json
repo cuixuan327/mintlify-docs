@@ -66,6 +66,23 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "API documentation",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "test",
+            "pages": [
+              "test"
+            ]
+          }
+        ]
       }
     ],
     "global": {
