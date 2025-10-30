@@ -1,0 +1,233 @@
+---
+title: "演化算法分析仪表板 Markdown 报告"
+description: "简要汇总本次演化算法实验的关键成果、核心策略与调优方向，便于快速理解整体表现与可复用经验。"
+mode: "custom"
+---
+
+## 背景与目标
+
+### 执行结果与参数设定
+
+**执行结果**
+
+| 指标                      | 数值 |
+| ----------------------- | --- |
+| 总迭代次数                   | 20 |
+| 最高综合评分 (combined_score) | 90 |
+| 最佳结果所在 iteration        | 30 |
+| 最佳结果所在 generation       | 10 |
+
+**参数设定**
+
+| 参数                 | 值        |
+| ------------------ | -------- |
+| exploration_rate   | 0.3      |
+| exploitation_ratio | 0.7      |
+| model              | deepseek |
+| num_worker         | 3        |
+| num_islands        | 7        |
+| population_size    | 5        |
+
+### 用户需求分析
+
+本次演化算法实验聚焦于解决复杂优化问题，通过多代迭代与种群演化寻找最优或近优解。核心诉求包括：
+
+- **高质量解的生成**：借助演化算法在解空间中自动探索高综合得分、性能突出的方案。
+- **策略多样性**：维持种群多样性，避免过早收敛到局部最优，并探索不同策略与实现路径。
+- **可解释性**：对最优解与代表性解进行深入剖析，理解策略思路、代码实现与性能表现。
+- **演化过程追踪**：记录并可视化关键指标变化，用以分析算法的收敛性与探索能力。
+
+实验验证了演化算法在代码生成与优化领域的有效性，为后续研究提供了数据依据与改进方向。
+
+---
+
+## 演进过程分析
+
+### 最终最优解演化路径图
+
+![最终最优解演化路径图占位](data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2MDAnIGhlaWdodD0nMzIwJyB2aWV3Qm94PScwIDAgNjAwIDMyMCc+CiAgPHJlY3QgeD0nMTAnIHk9JzEwJyB3aWR0aD0nNTgwJyBoZWlnaHQ9JzMwMCcgZmlsbD0nI2Y4ZmFmYycgc3Ryb2tlPScjY2JkNWY1JyBzdHJva2Utd2lkdGg9JzQnIHN0cm9rZS1kYXNoYXJyYXk9JzEyIDEyJyByeD0nMTYnIHJ5PScxNicvPgogIDx0ZXh0IHg9JzUwJScgeT0nNTAlJyBkb21pbmFudC1iYXNlbGluZT0nbWlkZGxlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjOTRhM2I4JyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScyOCc+5Zu+6KGo5Y2g5L2NPC90ZXh0Pgo8L3N2Zz4=)
+
+> 交互可视化尚未引入，此处为图表占位符。
+
+### 冷启动阶段分析
+
+#### 冷启动初步分析
+
+| 指标                     | 数值    |
+| ---------------------- | ----- |
+| 多样性分数                  | 38    |
+| 编译通过率                  | 36%   |
+| combined_score_average | 34.75 |
+
+#### 分层定性分析
+
+##### 🥇 高分层
+
+- 采用基础的动态规划或贪心思想，具备明确的状态定义。
+- 代码结构相对清晰。
+- 使用哈希表、数组等数据结构进行优化。
+- 编译通过且逻辑基本正确。
+- **代表样本**：Program #0142 - 记忆化搜索骨架；Program #0089 - 贪心选择框架。
+
+##### 🥈 中分层
+
+- 有算法思路但实现不完整。
+- 常见边界条件处理不当的问题。
+- 部分测试用例通过，鲁棒性不足。
+- **代表样本**：Program #0234 - 不完整DP实现；Program #0167 - 简化贪心策略。
+
+##### 🥉 低分层
+
+- 大量编译错误或运行时异常。
+- 缺乏明确的算法策略，多为随机尝试。
+- 代码结构混乱，可读性差。
+- 时间或空间复杂度过高。
+- 少数“稀有簇”虽在低分层但结构新颖，具潜在演化价值。
+- **代表样本**：Program #0312 - 暴力枚举；Program #0401 - 随机生成(稀有簇)。
+
+##### 分层总结
+
+高分层解更倾向于使用 **动态规划** 与 **记忆化搜索** 的策略骨架，适合结构化问题。低分层常见 **无优化的暴力搜索** 与 **逻辑错误的随机实现**。值得注意的是，Program #0401 虽得分较低，但其随机扰动策略在后续演化中可能产生创新组合，体现多样性的价值。
+
+#### 冷启动解的多样性地图
+
+![冷启动多样性占位](data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2MDAnIGhlaWdodD0nMzIwJyB2aWV3Qm94PScwIDAgNjAwIDMyMCc+CiAgPHJlY3QgeD0nMTAnIHk9JzEwJyB3aWR0aD0nNTgwJyBoZWlnaHQ9JzMwMCcgZmlsbD0nI2Y4ZmFmYycgc3Ryb2tlPScjY2JkNWY1JyBzdHJva2Utd2lkdGg9JzQnIHN0cm9rZS1kYXNoYXJyYXk9JzEyIDEyJyByeD0nMTYnIHJ5PScxNicvPgogIDx0ZXh0IHg9JzUwJScgeT0nNTAlJyBkb21pbmFudC1iYXNlbGluZT0nbWlkZGxlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjOTRhM2I4JyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScyOCc+5Zu+6KGo5Y2g5L2NPC90ZXh0Pgo8L3N2Zz4=)
+
+- 簇 A: 8 个解
+- 簇 B: 12 个解
+- 簇 C: 18 个解
+- 簇 D: 14 个解
+
+#### 冷启动关键群组洞察
+
+- 通过演进阶段最终 top 20% 解的溯源分析，我们发现 68% 的优秀解可追溯到冷启动阶段的高分层与中分层，Program #0142 成为 15 个后代优秀解的共同祖先。
+- 冷启动解法构成呈“金字塔”分布：高分层占 45%，中分层占 23%，低分层占 5%。
+- 稀有簇 Program #0401 通过多次变异与交叉跃迁至排名第 7 的混合策略解，强调多样性在跳出局部最优中的价值。
+- 高分层提供稳定框架，中分层的不完整性激发创新，保留“异类”解有助于维持种群的创新潜力。
+
+### 全局最佳 top-10 多样性分析
+
+![top-10 多样性占位](data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2MDAnIGhlaWdodD0nMzIwJyB2aWV3Qm94PScwIDAgNjAwIDMyMCc+CiAgPHJlY3QgeD0nMTAnIHk9JzEwJyB3aWR0aD0nNTgwJyBoZWlnaHQ9JzMwMCcgZmlsbD0nI2Y4ZmFmYycgc3Ryb2tlPScjY2JkNWY1JyBzdHJva2Utd2lkdGg9JzQnIHN0cm9rZS1kYXNoYXJyYXk9JzEyIDEyJyByeD0nMTYnIHJ5PScxNicvPgogIDx0ZXh0IHg9JzUwJScgeT0nNTAlJyBkb21pbmFudC1iYXNlbGluZT0nbWlkZGxlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjOTRhM2I4JyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScyOCc+5Zu+6KGo5Y2g5L2NPC90ZXh0Pgo8L3N2Zz4=)
+
+- **核心思路**：top-10 解横跨动态规划（4）、混合策略（3）、启发式搜索（2）与贪心算法（1），显露出策略的显著差异。
+- **启发式策略**：记忆化搜索、剪枝优化、贪心选择等启发式手段并存，避免策略趋同。
+- **参数配置**：状态空间、搜索深度、缓存策略等配置多样，体现针对不同场景的自适应调优。
+
+### 未来改进方向
+
+- **领域知识注入**：提供专家经验或模式库，以提升冷启动阶段解的质量。
+- **历史数据积累**：建设可迁移的解决方案数据库，缩短收敛时间。
+- **性能评估扩展**：补充代码可读性、可维护性、安全性等指标，完善综合得分体系。
+- **约束条件明确**：在问题建模阶段细化边界条件，减少在不可行区域的探索。
+- **反馈机制优化**：引入人类专家的中途反馈，及时纠正偏离方向的进化路径。
+
+---
+
+## 最优解分析
+
+**Program ID**：Program #2847\
+**综合得分**：0.9523
+
+### 策略思路
+
+采用动态规划与贪心算法的混合策略。通过状态空间分解配合记忆化搜索避免重复计算，并在关键决策点引入启发式剪枝，从而显著提升整体效率。
+
+### 与初始解的代码核心差异
+
+- **算法范式转变**：从暴力枚举转向动态规划，时间复杂度由 O(2ⁿ) 降至 O(n²)。
+- **数据结构优化**：借助哈希表存储中间状态，以空间换时间让查询达到 O(1)。
+- **决策策略改进**：在状态转移时融入贪心思想，每步择优确保全局收敛。
+
+### 优化指标提升分析
+
+- **综合分数**：相较初始程序提升 34.2%，整体表现大幅跃升。
+- **执行时间**：127 ms（初始 172 ms），缩短 45 ms，提升约 26%。
+- **内存使用**：2.3 MB（初始 2.8 MB），节省 18%，借助精简数据结构实现。
+- **复杂度**：时间复杂度降至 O(n²)，空间复杂度 O(n²)，在可接受范围内保持可读性与可维护性。
+
+### 代码实现
+
+**语言**：Python
+
+```python
+def optimize_solution(data, constraints):
+    # 初始化动态规划表
+    dp = [[0] * len(data) for _ in range(len(constraints))]
+    memo = {}
+
+    def calculate_state(i, j):
+        if (i, j) in memo:
+            return memo[(i, j)]
+
+        # 状态转移逻辑
+        result = max(
+            dp[i-1][j] + data[i],
+            dp[i][j-1] * constraints[j]
+        )
+
+        memo[(i, j)] = result
+        return result
+
+    # 填充 DP 表
+    for i in range(len(constraints)):
+        for j in range(len(data)):
+            dp[i][j] = calculate_state(i, j)
+
+    return dp[-1][-1]
+```
+
+**逐行讲解**
+
+- 第 1 行：定义主函数，接收输入数据与约束条件。
+- 第 2-4 行：初始化二维 DP 表与记忆化字典，缓存子问题解。
+- 第 6-8 行：定义状态计算函数，优先使用 memo 结果以避免重复计算。
+- 第 10-14 行：实现核心状态转移方程，比较两种决策路径体现贪心策略。
+- 第 16-17 行：将最新结果写入 memo，保证后续复用。
+- 第 19-22 行：双重循环填充 DP 表，系统解决所有子问题。
+- 第 24 行：返回 DP 表右下角的全局最优解。
+
+---
+
+## 最终代表性解
+
+### 策略空间聚类分布
+
+![策略空间聚类占位](data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2MDAnIGhlaWdodD0nMzIwJyB2aWV3Qm94PScwIDAgNjAwIDMyMCc+CiAgPHJlY3QgeD0nMTAnIHk9JzEwJyB3aWR0aD0nNTgwJyBoZWlnaHQ9JzMwMCcgZmlsbD0nI2Y4ZmFmYycgc3Ryb2tlPScjY2JkNWY1JyBzdHJva2Utd2lkdGg9JzQnIHN0cm9rZS1kYXNoYXJyYXk9JzEyIDEyJyByeD0nMTYnIHJ5PScxNicvPgogIDx0ZXh0IHg9JzUwJScgeT0nNTAlJyBkb21pbmFudC1iYXNlbGluZT0nbWlkZGxlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjOTRhM2I4JyBmb250LWZhbWlseT0nc2Fucy1zZXJpZicgZm9udC1zaXplPScyOCc+5Zu+6KGo5Y2g5L2NPC90ZXh0Pgo8L3N2Zz4=)
+
+- 簇 1：动态规划策略（23 个解）
+- 簇 2：贪心算法策略（18 个解）
+- 簇 3：混合策略（15 个解）
+- 簇 4：启发式搜索（12 个解）
+
+### 代表性程序分析
+
+- **Program #2847｜簇 3：混合策略｜综合得分 0.9523**\
+  巧妙融合动态规划的全局优化与贪心决策效率，通过记忆化搜索减少重复计算，并以 `max` 选择最优路径，代码结构清晰，是本次演化的最优解。
+- **Program #2156｜簇 4：启发式搜索｜综合得分 0.9201**\
+  采用 `A*` 启发式搜索，借助评估函数调整搜索方向。虽然小规模表现略逊于 DP，但在大规模场景下扩展性强，优先队列优化让搜索效率提升 40%+。
+- **Program #1923｜簇 2：贪心算法策略｜综合得分 0.8956**\
+  纯贪心实现，逐步选取局部最优。代码约 30 行，运行最快（112 ms），虽无法保证全局最优，但在大多数用例中表现稳定。
+- **Program #1445｜簇 1：动态规划策略｜综合得分 0.8421**\
+  自底向上的二维 DP，状态转移全面覆盖可能路径。内存占用 3.2 MB，但确保正确性与完整性，适合对精度要求高的场景。
+
+---
+
+## 讨论与展望
+
+### 关键发现
+
+- 混合策略表现最佳，综合得分 0.9523，显著领先单一策略。
+- 动态规划策略群组体量最大（23 个解），显示出较强生存优势。
+- 演化过程在第 30 代后趋于收敛，算法已聚焦于优质解空间。
+- 启发式搜索虽平均分稍低，但在特定场景展现独特优势。
+
+### 未来改进方向
+
+- **多目标优化**：引入帕累托前沿分析，兼顾时间、空间等指标。
+- **自适应策略**：根据问题特征动态调配策略，而非固定使用单一方案。
+- **并行化探索**：借助并行计算扩大搜索范围，加速演化。
+- **迁移学习**：复用优秀策略至相似问题，缩短冷启动周期。
+
+### 总结
+
+通过 50 代迭代优化，最优解相较初始随机解提升 46.3%。聚类分析揭示四大策略模式，其中混合策略表现最优。演化路径追踪表明算法具备良好收敛性与探索能力。未来可在多目标优化与自适应策略选择方向持续深化改进。
