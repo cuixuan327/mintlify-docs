@@ -68,14 +68,8 @@
         ]
       },
       {
-        "tab": "Guides",
+        "tab": "test",
         "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
           {
             "group": "test",
             "pages": [
